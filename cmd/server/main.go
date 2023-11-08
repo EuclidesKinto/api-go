@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"api-go/configs"
+	"fmt"
+)
 
 func main() {
-	fmt.Println("TAO")
+	config, _ := configs.LoadConfig(".")
+	fmt.Println(config.DBDriver)
 }
