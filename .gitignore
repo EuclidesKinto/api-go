@@ -1,4 +1,4 @@
-/cmd/server/.env
+/cmd/server/app.env
 
 *.exe
 *.exe~
