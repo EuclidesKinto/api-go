@@ -15,26 +15,26 @@ type conf struct {
 	DBName        string `mapstructure:"DB_NAME"`
 	WebServerPort string `mapstructure:"DB_WEB_SERVER_PORT"`
 	JWTSecret     string `mapstructure:"JWT_SECRET"`
-	JWTExpiresIn  int    `mapstructure:"JWT_EXPIRES_IN"`
+	JWTExpiresIn  int    `mapstructure:"JWT_EXPIRESIN"`
 	TokenAuth     *jwtauth.JWTAuth
 }
 
 func LoadConfig(path string) (*conf, error) {
 	var cfg *conf
-	viper.SetConfigName("app_config")
-	viper.SetConfigType("env")
 	viper.AddConfigPath(path)
-	viper.SetConfigFile(".env")
+	viper.SetConfigName("app")
+	viper.SetConfigType("env")
+
 	viper.AutomaticEnv()
+
 	err := viper.ReadInConfig()
 	if err != nil {
-		fmt.Printf("o erro: ", err)
-		panic(err)
+		panic(fmt.Errorf("Erro fatal no arquivo de configuração: %w \n", err))
 	}
 	err = viper.Unmarshal(&cfg)
 	if err != nil {
-		panic(err)
+		panic(fmt.Errorf("Erro fatal no arquivo de configuração: %w \n", err))
 	}
 	cfg.TokenAuth = jwtauth.New("HS256", []byte(cfg.JWTSecret), nil)
-	return cfg, err
+	return cfg, nil
 }
