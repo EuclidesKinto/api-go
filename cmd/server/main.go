@@ -27,6 +27,9 @@ func main() {
 		log.Fatalf("Falha na migração do banco de dados: %v", errDb)
 	}
 
+	productDB := database.NewProduct(db)
+	productHandler := NewProductHandler(productDB)
+	http.HandleFunc("/products", productHandler.CreateProduct)
 	fmt.Println("Servidor iniciando na porta 8000...")
 	if errHttp := http.ListenAndServe(":8000", nil); errHttp != nil {
 		log.Fatalf("Falha ao iniciar o servidor HTTP: %v", errHttp)

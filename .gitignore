@@ -13,3 +13,4 @@ golang-gin-01.iml
 vcs.xml
 .env
 .idea
+cmd/server/test.db

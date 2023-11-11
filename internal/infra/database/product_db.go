@@ -9,6 +9,11 @@ type Product struct {
 	DB *gorm.DB
 }
 
+func (p *Product) FindById(product *entity.Product) (*entity.Product, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func NewProduct(db *gorm.DB) *Product {
 	return &Product{DB: db}
 }
