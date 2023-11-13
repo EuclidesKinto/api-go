@@ -3,6 +3,7 @@ module api-go
 go 1.20
 
 require (
+	github.com/go-chi/chi v1.5.1
 	github.com/go-chi/jwtauth v1.2.0
 	github.com/google/uuid v1.4.0
 	github.com/spf13/viper v1.17.0
@@ -20,7 +21,6 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
 	github.com/lestrrat-go/backoff/v2 v2.0.8 // indirect
 	github.com/lestrrat-go/blackmagic v1.0.2 // indirect
 	github.com/lestrrat-go/httpcc v1.0.1 // indirect

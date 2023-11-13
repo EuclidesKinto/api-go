@@ -6,6 +6,8 @@ import (
 	"api-go/internal/infra/database"
 	"api-go/internal/infra/webserver/handlers/produtc_handlers"
 	"fmt"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
@@ -28,9 +30,13 @@ func main() {
 
 	productDB := database.NewProduct(db)
 	productHandler := produtc_handlers.NewProductHandler(productDB)
-	http.HandleFunc("/products", productHandler.CreateProduct)
+
+	route := chi.NewRouter()
+	route.Use(middleware.Logger)
+	route.Post("/products", productHandler.CreateProduct)
+
 	fmt.Println("Servidor iniciando na porta 8000...")
-	if errHttp := http.ListenAndServe(":8000", nil); errHttp != nil {
+	if errHttp := http.ListenAndServe(":8000", route); errHttp != nil {
 		log.Fatalf("Falha ao iniciar o servidor HTTP: %v", errHttp)
 	}
 
