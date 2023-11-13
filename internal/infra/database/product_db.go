@@ -9,9 +9,10 @@ type Product struct {
 	DB *gorm.DB
 }
 
-func (p *Product) FindById(product *entity.Product) (*entity.Product, error) {
-	//TODO implement me
-	panic("implement me")
+func (p *Product) FindByID(id string) (*entity.Product, error) {
+	var product entity.Product
+	err := p.DB.First(&product, "id = ?", id).Error
+	return &product, err
 }
 
 func NewProduct(db *gorm.DB) *Product {
@@ -20,12 +21,6 @@ func NewProduct(db *gorm.DB) *Product {
 
 func (p *Product) Create(product *entity.Product) error {
 	return p.DB.Create(product).Error
-}
-
-func (p *Product) FindByID(id string) (*entity.Product, error) {
-	var product entity.Product
-	err := p.DB.First(&product, "id = ?", id).Error
-	return &product, err
 }
 
 func (p *Product) Update(product *entity.Product) error {
