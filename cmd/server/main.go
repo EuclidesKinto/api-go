@@ -4,7 +4,7 @@ import (
 	"api-go/configs"
 	"api-go/internal/entity"
 	"api-go/internal/infra/database"
-	"api-go/internal/infra/webserver/handlers/produtc_handlers"
+	"api-go/internal/infra/webserver/handlers"
 	"fmt"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -28,11 +28,17 @@ func main() {
 		log.Fatalf("Falha na migração do banco de dados: %v", errDb)
 	}
 
+	userDB := database.NewUser(db)
+	userHandler := handlers.NewUserHandler(userDB)
+
 	productDB := database.NewProduct(db)
-	productHandler := produtc_handlers.NewProductHandler(productDB)
+	productHandler := handlers.NewProductHandler(productDB)
 
 	route := chi.NewRouter()
 	route.Use(middleware.Logger)
+
+	route.Post("/users", userHandler.Create)
+
 	route.Post("/products", productHandler.CreateProduct)
 	route.Get("/products", productHandler.GetProducts)
 	route.Get("/products/{id}", productHandler.GetProduct)

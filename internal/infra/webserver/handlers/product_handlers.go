@@ -1,4 +1,4 @@
-package produtc_handlers
+package handlers
 
 import (
 	"api-go/internal/dto"
