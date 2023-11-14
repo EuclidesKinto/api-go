@@ -34,6 +34,7 @@ func main() {
 	route := chi.NewRouter()
 	route.Use(middleware.Logger)
 	route.Post("/products", productHandler.CreateProduct)
+	route.Get("/products", productHandler.GetProducts)
 	route.Get("/products/{id}", productHandler.GetProduct)
 	route.Put("/products/{id}", productHandler.UpdateProduct)
 	route.Delete("/products/{id}", productHandler.Delete)
