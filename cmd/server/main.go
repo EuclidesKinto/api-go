@@ -36,6 +36,7 @@ func main() {
 	route.Post("/products", productHandler.CreateProduct)
 	route.Get("/products/{id}", productHandler.GetProduct)
 	route.Put("/products/{id}", productHandler.UpdateProduct)
+	route.Delete("/products/{id}", productHandler.Delete)
 
 	fmt.Println("Servidor iniciando na porta 8000...")
 	if errHttp := http.ListenAndServe(":8000", route); errHttp != nil {
