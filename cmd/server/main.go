@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/jwtauth"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
@@ -41,11 +42,15 @@ func main() {
 	route.Post("/users", userHandler.Create)
 	route.Post("/users/jwt", userHandler.GetJWT)
 
-	route.Post("/products", productHandler.CreateProduct)
-	route.Get("/products", productHandler.GetProducts)
-	route.Get("/products/{id}", productHandler.GetProduct)
-	route.Put("/products/{id}", productHandler.UpdateProduct)
-	route.Delete("/products/{id}", productHandler.Delete)
+	route.Route("/products", func(route chi.Router) {
+		route.Use(jwtauth.Verifier(config.TokenAuth))
+		route.Use(jwtauth.Authenticator)
+		route.Post("/", productHandler.CreateProduct)
+		route.Get("/", productHandler.GetProducts)
+		route.Get("/{id}", productHandler.GetProduct)
+		route.Put("/{id}", productHandler.UpdateProduct)
+		route.Delete("/{id}", productHandler.Delete)
+	})
 
 	fmt.Println("Servidor iniciando na porta 8000...")
 	if errHttp := http.ListenAndServe(":8000", route); errHttp != nil {
