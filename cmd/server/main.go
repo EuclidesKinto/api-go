@@ -15,8 +15,9 @@ import (
 )
 
 func main() {
-	if _, err := configs.LoadConfig("."); err != nil {
-		log.Fatalf("Falha ao carregar a configuração: %v", err)
+	config, err := configs.LoadConfig(".")
+	if err != nil {
+		log.Fatalf("Falha ao abrir o configs: %v", err)
 	}
 
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -29,7 +30,7 @@ func main() {
 	}
 
 	userDB := database.NewUser(db)
-	userHandler := handlers.NewUserHandler(userDB)
+	userHandler := handlers.NewUserHandler(userDB, config.TokenAuth, config.JWTExpiresIn)
 
 	productDB := database.NewProduct(db)
 	productHandler := handlers.NewProductHandler(productDB)
@@ -38,6 +39,7 @@ func main() {
 	route.Use(middleware.Logger)
 
 	route.Post("/users", userHandler.Create)
+	route.Post("/users/jwt", userHandler.GetJWT)
 
 	route.Post("/products", productHandler.CreateProduct)
 	route.Get("/products", productHandler.GetProducts)
